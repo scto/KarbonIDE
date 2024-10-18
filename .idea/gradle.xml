@@ -9,20 +9,20 @@
         <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">
           <set>
-            <option value="$USER_HOME$/Android/AndroidStudioProjects/Xed-Editor" />
-            <option value="$USER_HOME$/Android/AndroidStudioProjects/Xed-Editor/app" />
-            <option value="$USER_HOME$/Android/AndroidStudioProjects/Xed-Editor/core" />
-            <option value="$USER_HOME$/Android/AndroidStudioProjects/Xed-Editor/core/commons" />
-            <option value="$USER_HOME$/Android/AndroidStudioProjects/Xed-Editor/core/components" />
-            <option value="$USER_HOME$/Android/AndroidStudioProjects/Xed-Editor/editor" />
-            <option value="$USER_HOME$/Android/AndroidStudioProjects/Xed-Editor/editor/editor" />
-            <option value="$USER_HOME$/Android/AndroidStudioProjects/Xed-Editor/editor/editor-lsp" />
-            <option value="$USER_HOME$/Android/AndroidStudioProjects/Xed-Editor/editor/language-textmate" />
-            <option value="$USER_HOME$/Android/AndroidStudioProjects/Xed-Editor/feature" />
-            <option value="$USER_HOME$/Android/AndroidStudioProjects/Xed-Editor/feature/filetree" />
-            <option value="$USER_HOME$/Android/AndroidStudioProjects/Xed-Editor/feature/plugin" />
-            <option value="$USER_HOME$/Android/AndroidStudioProjects/Xed-Editor/feature/runner" />
-            <option value="$USER_HOME$/Android/AndroidStudioProjects/Xed-Editor/feature/settings" />
+            <option value="$USER_HOME$/Android/AndroidStudioProjects/KarbonIDE" />
+            <option value="$USER_HOME$/Android/AndroidStudioProjects/KarbonIDE/app" />
+            <option value="$USER_HOME$/Android/AndroidStudioProjects/KarbonIDE/core" />
+            <option value="$USER_HOME$/Android/AndroidStudioProjects/KarbonIDE/core/commons" />
+            <option value="$USER_HOME$/Android/AndroidStudioProjects/KarbonIDE/core/components" />
+            <option value="$USER_HOME$/Android/AndroidStudioProjects/KarbonIDE/editor" />
+            <option value="$USER_HOME$/Android/AndroidStudioProjects/KarbonIDE/editor/editor" />
+            <option value="$USER_HOME$/Android/AndroidStudioProjects/KarbonIDE/editor/editor-lsp" />
+            <option value="$USER_HOME$/Android/AndroidStudioProjects/KarbonIDE/editor/language-textmate" />
+            <option value="$USER_HOME$/Android/AndroidStudioProjects/KarbonIDE/feature" />
+            <option value="$USER_HOME$/Android/AndroidStudioProjects/KarbonIDE/feature/filetree" />
+            <option value="$USER_HOME$/Android/AndroidStudioProjects/KarbonIDE/feature/plugin" />
+            <option value="$USER_HOME$/Android/AndroidStudioProjects/KarbonIDE/feature/runner" />
+            <option value="$USER_HOME$/Android/AndroidStudioProjects/KarbonIDE/feature/settings" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
