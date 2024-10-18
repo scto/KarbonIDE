@@ -25,7 +25,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Karbon"
+rootProject.name = "KarbonIDE"
 include(":app")
 
 include(":editor:editor")
