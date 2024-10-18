@@ -12,9 +12,8 @@
 
 **KarbonIDE** is a fork of [Karbon (Xed-Editor)](https://github.com/Xed-Editor/Xed-Editor) dedicated to programming and development on mobile devices.
 
-Special thanks to [@AndroMaster436](https://github.com/AndroMaster436)
-
 ## Features and supported languages
+thanks to [@AndroMaster436](https://github.com/AndroMaster436) for adding runners
 - [ ] Project View
 - [ ] Kotlin
 - [ ] GCC
