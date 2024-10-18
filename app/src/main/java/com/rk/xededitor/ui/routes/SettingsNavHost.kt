@@ -1,4 +1,4 @@
-package com.rk.xededitor.ui.activities.settings
+package com.rk.xededitor.ui.routes
 
 
 import android.app.Activity

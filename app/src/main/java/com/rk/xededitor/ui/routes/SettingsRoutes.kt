@@ -1,4 +1,4 @@
-package com.rk.xededitor.ui.activities.settings
+package com.rk.xededitor.ui.routes
 
 sealed class SettingsRoutes(val route: String) {
     data object Settings : SettingsRoutes("settings")

@@ -5,7 +5,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.rk.xededitor.R
-import com.rk.xededitor.ui.activities.settings.SettingsRoutes
+import com.rk.xededitor.ui.routes.SettingsRoutes
 import org.robok.engine.core.components.compose.preferences.base.PreferenceLayout
 import org.robok.engine.core.components.compose.preferences.category.PreferenceCategory
 

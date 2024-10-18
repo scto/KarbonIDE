@@ -323,7 +323,6 @@ private fun PluginRow(
             .fillMaxWidth()
             .clickable(onClick = {
                 onClick()
-                Log.e("Plugin Icon", plugin.icon!!)
             }),
         startWidget = {
             AnimatedVisibility(
