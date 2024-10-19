@@ -72,10 +72,12 @@ fun ProjectView(modifier: Modifier = Modifier) {
                 }
                 // NoContentScreen(label = "No Projects")
             }
-            PreferenceGroup(heading = "projects") {
-                projects.forEach { project ->
-                    if (project.isProject()) {
-                        ProjectRow(project = project)
+            if(!projects.isEmpty()) {
+                PreferenceGroup(heading = "projects") {
+                    projects.forEach { project ->
+                        if (project.isProject()) {
+                            ProjectRow(project = project)
+                        }
                     }
                 }
             }
