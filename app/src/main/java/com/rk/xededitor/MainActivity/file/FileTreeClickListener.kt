@@ -15,48 +15,42 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 
-val fileClickListener =
-    object : FileClickListener {
-        override fun onClick(node: Node<FileObject>) {
-            if (node.value.isDirectory()) {
-                return
+val fileClickListener = object : FileClickListener {
+    override fun onClick(node: Node<FileObject>) {
+        if (node.value.isDirectory()) {
+            return
+        }
+        
+        activityRef.get()?.let {
+            if (it.isPaused) {
+                return@let
+            }
+            val file = File(node.value.getAbsolutePath())
+            
+            it.adapter.addFragment(file)
+            if (!PreferencesData.getBoolean(
+                    PreferencesKeys.KEEP_DRAWER_LOCKED,
+                    false,
+                )
+            ) {
+                it.binding.drawerLayout.close()
             }
             
-            activityRef.get()?.let {
-                if (it.isPaused) {
-                    return@let
-                }
-                val file = File(node.value.getAbsolutePath())
-                
-                it.adapter.addFragment(file)
-                if (
-                    !PreferencesData.getBoolean(
-                        PreferencesKeys.KEEP_DRAWER_LOCKED,
-                        false,
-                    )
-                ) {
-                    it.binding.drawerLayout.close()
-                }
-                
-                DefaultScope.launch(Dispatchers.Main) {
-                    delay(2000)
-                    MenuItemHandler.update(it)
-                }
+            DefaultScope.launch(Dispatchers.Main) {
+                delay(2000)
+                MenuItemHandler.update(it)
             }
         }
     }
+}
 
-val fileLongClickListener =
-    object : FileLongClickListener {
-        override fun onLongClick(node: Node<FileObject>) {
-            activityRef.get()?.apply {
-                getSelectedProjectRootFilePath(this)?.let {
-                    FileAction(this, File(it), File(node.value.getAbsolutePath()))
-                }
+val fileLongClickListener = object : FileLongClickListener {
+    override fun onLongClick(node: Node<FileObject>) {
+        activityRef.get()?.apply {
+            getSelectedProjectRootFilePath(this)?.let {
+                FileAction(this, File(it), File(node.value.getAbsolutePath()))
             }
         }
-<<<<<<< HEAD
     }
-=======
-    }
->>>>>>> karbon/dev
+    
+}
