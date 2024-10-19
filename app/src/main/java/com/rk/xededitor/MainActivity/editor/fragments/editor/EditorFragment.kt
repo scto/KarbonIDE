@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
+@Suppress("NOTHING_TO_INLINE")
 class EditorFragment(val context: Context) : CoreFragment {
     
     @JvmField
@@ -39,8 +40,7 @@ class EditorFragment(val context: Context) : CoreFragment {
     
     override fun loadFile(xfile: File) {
         file = xfile
-        scope.launch {
-            delay(1000)
+        scope.launch(Dispatchers.Default) {
             setupEditor?.setupLanguage(file!!.name)
             editor!!.loadFile(xfile)
             withContext(Dispatchers.Main){
