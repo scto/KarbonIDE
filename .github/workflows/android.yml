@@ -23,7 +23,7 @@ jobs:
         with:
           bot_token: ${{ secrets.TELEGRAM_TOKEN }}
           chat_id: '-1002408175863'
-          topic_id: '2071'
+          topic_id: '938'
 
   build-release:
     name: Build Release
@@ -57,6 +57,7 @@ jobs:
         env:
           KEYSTORE_FILE: /tmp/xed.keystore
           SIGNING_PROPERTIES_FILE: /tmp/signing.properties
+        continue-on-error: true
 
       - name: Archive APK
         uses: actions/upload-artifact@v4
@@ -67,14 +68,6 @@ jobs:
       - name: Delete xed.keystore and signing.properties
         run: rm /tmp/xed.keystore /tmp/signing.properties
 
-      - name: Send APK to Debug Channel Telegram with Topic ID
-        if: success()
-        run: |
-          curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument" \
-            -F chat_id="-1002408175863" \
-            -F message_thread_id="2065" \
-            -F caption="${{ github.event.head_commit.message }} by ${{ github.actor }}" \
-            -F document=@"app/karbon-${{ env.COMMIT_HASH }}.apk"
       - name: Send APK to Telegram
         if: ${{ success() }}
         run: |
