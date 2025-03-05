@@ -1,8 +1,62 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
+    "extends": [
+      "github>DanySK/renovate-config",
+      ":enableDependencyDashboard"
   ],
-  "automerge": false,
-  "includeForks": true
+  "automerge": true,
+  "includeForks": true,
+  "labels": ["dependencies"],
+  "osvVulnerabilityAlerts": true,
+  "packageRules": [
+    {
+      "groupName": "Kotlin & KSP",
+      "matchPackagePrefixes": [
+        "com.google.devtools.ksp"
+      ],
+      "matchPackagePatterns": [
+        "org.jetbrains.kotlin.*"
+      ]
+    },
+    {
+      "groupName": "AndroidX Navigation",
+      "matchPackagePatterns": [
+        "androidx.navigation.*"
+      ]
+    },
+    {
+      "description": "Trigger a minor update on some dependencies",
+      "matchDepNames": [
+        "/^org\\.apache\\.commons:commons-math3$/",
+        "/^org\\.danilopianini:listset$/"
+      ],
+      "semanticCommitScope": "api-deps"
+    },
+    {
+      "description": "Some updates should have type docs",
+      "matchDepNames": [
+        "/^org\\.jetbrains\\.dokka.*/",
+        "gohugoio/hugo"
+      ],
+      "semanticCommitType": "docs"
+    },
+    {
+      "description": "Identify some updates as core",
+      "matchDepNames": [
+        "/^it\\.unibo\\.scafi:.*/",
+        "/^org\\.jetbrains\\.kotlin:.*/",
+        "/^org\\.protelis:.*/"
+      ],
+      "semanticCommitScope": "core-deps"
+    },
+    {
+      "description": "Updates to to the site should have type docs",
+      "matchPaths": ["site/*"],
+      "semanticCommitType": "docs"
+    }
+  ],
+  "ignorePaths": [
+    "testing/resources/**",
+    "gradle-plugin/src/test/resources/**"
+  ]
 }
