@@ -24,102 +24,99 @@
 package io.github.rosemoe.sora.event;
 
 import androidx.annotation.NonNull;
-
 import io.github.rosemoe.sora.widget.CodeEditor;
 
 /**
- * Reports a scroll in editor.
- * The scrolling action can either have run or be running when this event is generated and sent.
- * <p>
- * The returned x,y positions are usually positive when over-scrolling is disabled. They represent
- * the left-top position's pixel in editor.
+ * Reports a scroll in editor. The scrolling action can either have run or be running when this
+ * event is generated and sent.
+ *
+ * <p>The returned x,y positions are usually positive when over-scrolling is disabled. They
+ * represent the left-top position's pixel in editor.
  */
 public class ScrollEvent extends Event {
 
-    /**
-     * Caused by thumb's exact movements
-     */
-    public final static int CAUSE_USER_DRAG = 1;
-    /**
-     * Caused by fling after user's movements
-     */
-    public final static int CAUSE_USER_FLING = 2;
-    /**
-     * Caused by calling {@link CodeEditor#ensurePositionVisible(int, int)}.
-     * This can happen when this method is manually called or either the user edits the text
-     */
-    public final static int CAUSE_MAKE_POSITION_VISIBLE = 3;
-    /**
-     * Caused by the user's thumb reaching the edge of editor viewport, which causes the editor to
-     * scroll to move the selection to text currently outside the viewport.
-     */
-    public final static int CAUSE_TEXT_SELECTING = 4;
+  /** Caused by thumb's exact movements */
+  public static final int CAUSE_USER_DRAG = 1;
 
-    public final static int CAUSE_SCALE_TEXT = 5;
+  /** Caused by fling after user's movements */
+  public static final int CAUSE_USER_FLING = 2;
 
-    private final int startX;
-    private final int startY;
-    private final int endX;
-    private final int endY;
-    private final int cause;
-    private float flingVelocityX;
-    private float flingVelocityY;
+  /**
+   * Caused by calling {@link CodeEditor#ensurePositionVisible(int, int)}. This can happen when this
+   * method is manually called or either the user edits the text
+   */
+  public static final int CAUSE_MAKE_POSITION_VISIBLE = 3;
 
-    public ScrollEvent(@NonNull CodeEditor editor, int startX, int startY, int endX, int endY, int cause) {
-        this(editor, startX, startY, endX, endY, cause, 0f, 0f);
-    }
+  /**
+   * Caused by the user's thumb reaching the edge of editor viewport, which causes the editor to
+   * scroll to move the selection to text currently outside the viewport.
+   */
+  public static final int CAUSE_TEXT_SELECTING = 4;
 
-    public ScrollEvent(@NonNull CodeEditor editor, int startX, int startY, int endX, int endY, int cause, float vx, float vy) {
-        super(editor);
-        this.startX = startX;
-        this.startY = startY;
-        this.endX = endX;
-        this.endY = endY;
-        this.cause = cause;
-        this.flingVelocityX = vx;
-        this.flingVelocityY = vy;
-    }
+  public static final int CAUSE_SCALE_TEXT = 5;
 
-    /**
-     * Get the start x
-     */
-    public int getStartX() {
-        return startX;
-    }
+  private final int startX;
+  private final int startY;
+  private final int endX;
+  private final int endY;
+  private final int cause;
+  private float flingVelocityX;
+  private float flingVelocityY;
 
-    /**
-     * Get the start y
-     */
-    public int getStartY() {
-        return startY;
-    }
+  public ScrollEvent(
+      @NonNull CodeEditor editor, int startX, int startY, int endX, int endY, int cause) {
+    this(editor, startX, startY, endX, endY, cause, 0f, 0f);
+  }
 
-    /**
-     * Get end x
-     */
-    public int getEndX() {
-        return endX;
-    }
+  public ScrollEvent(
+      @NonNull CodeEditor editor,
+      int startX,
+      int startY,
+      int endX,
+      int endY,
+      int cause,
+      float vx,
+      float vy) {
+    super(editor);
+    this.startX = startX;
+    this.startY = startY;
+    this.endX = endX;
+    this.endY = endY;
+    this.cause = cause;
+    this.flingVelocityX = vx;
+    this.flingVelocityY = vy;
+  }
 
-    /**
-     * Get end y
-     */
-    public int getEndY() {
-        return endY;
-    }
+  /** Get the start x */
+  public int getStartX() {
+    return startX;
+  }
 
-    /**
-     * Get the cause of the scroll
-     */
-    public int getCause() {
-        return cause;
-    }
+  /** Get the start y */
+  public int getStartY() {
+    return startY;
+  }
 
-    public float getFlingVelocityX() {
-        return flingVelocityX;
-    }
+  /** Get end x */
+  public int getEndX() {
+    return endX;
+  }
 
-    public float getFlingVelocityY() {
-        return flingVelocityY;
-    }
+  /** Get end y */
+  public int getEndY() {
+    return endY;
+  }
+
+  /** Get the cause of the scroll */
+  public int getCause() {
+    return cause;
+  }
+
+  public float getFlingVelocityX() {
+    return flingVelocityX;
+  }
+
+  public float getFlingVelocityY() {
+    return flingVelocityY;
+  }
 }

@@ -24,7 +24,6 @@
 package io.github.rosemoe.sora.event;
 
 import androidx.annotation.NonNull;
-
 import io.github.rosemoe.sora.widget.CodeEditor;
 
 /**
@@ -34,33 +33,31 @@ import io.github.rosemoe.sora.widget.CodeEditor;
  */
 public class HandleStateChangeEvent extends Event {
 
-    public final static int HANDLE_TYPE_INSERT = 0;
-    public final static int HANDLE_TYPE_LEFT = 1;
-    public final static int HANDLE_TYPE_RIGHT = 2;
-    private final int which;
-    private final boolean isHeld;
+  public static final int HANDLE_TYPE_INSERT = 0;
+  public static final int HANDLE_TYPE_LEFT = 1;
+  public static final int HANDLE_TYPE_RIGHT = 2;
+  private final int which;
+  private final boolean isHeld;
 
-    public HandleStateChangeEvent(@NonNull CodeEditor editor, int which, boolean heldState) {
-        super(editor);
-        this.which = which;
-        isHeld = heldState;
-    }
+  public HandleStateChangeEvent(@NonNull CodeEditor editor, int which, boolean heldState) {
+    super(editor);
+    this.which = which;
+    isHeld = heldState;
+  }
 
-    /**
-     * Get handle type of this event
-     * @see #HANDLE_TYPE_LEFT
-     * @see #HANDLE_TYPE_RIGHT
-     * @see #HANDLE_TYPE_INSERT
-     */
-    public int getHandleType() {
-        return which;
-    }
+  /**
+   * Get handle type of this event
+   *
+   * @see #HANDLE_TYPE_LEFT
+   * @see #HANDLE_TYPE_RIGHT
+   * @see #HANDLE_TYPE_INSERT
+   */
+  public int getHandleType() {
+    return which;
+  }
 
-    /**
-     * Is the handle held now
-     */
-    public boolean isHeld() {
-        return isHeld;
-    }
-
+  /** Is the handle held now */
+  public boolean isHeld() {
+    return isHeld;
+  }
 }

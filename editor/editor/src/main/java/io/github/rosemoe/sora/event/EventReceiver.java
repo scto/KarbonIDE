@@ -27,6 +27,5 @@ import androidx.annotation.NonNull;
 
 public interface EventReceiver<T extends Event> {
 
-    void onReceive(@NonNull T event, @NonNull Unsubscribe unsubscribe);
-
+  void onReceive(@NonNull T event, @NonNull Unsubscribe unsubscribe);
 }

@@ -30,102 +30,93 @@ package io.github.rosemoe.sora.util;
  */
 public class LongArrayList {
 
-    private long[] data;
-    private int length;
+  private long[] data;
+  private int length;
 
-    public LongArrayList() {
-        data = new long[64];
+  public LongArrayList() {
+    data = new long[64];
+  }
+
+  /** Add a value at end */
+  public void add(long value) {
+    data[length++] = value;
+    if (data.length == length) {
+      long[] newData = new long[length << 1];
+      System.arraycopy(data, 0, newData, 0, length);
+      data = newData;
     }
+  }
 
-    /**
-     * Add a value at end
-     */
-    public void add(long value) {
-        data[length++] = value;
-        if (data.length == length) {
-            long[] newData = new long[length << 1];
-            System.arraycopy(data, 0, newData, 0, length);
-            data = newData;
-        }
+  /** Get length of the list */
+  public int size() {
+    return length;
+  }
+
+  /**
+   * Set element at given index to {@code value}
+   *
+   * @throws ArrayIndexOutOfBoundsException if index is invalid
+   */
+  public void set(int index, long value) {
+    if (index >= length || index < 0) {
+      throw new ArrayIndexOutOfBoundsException(index);
     }
+    data[index] = value;
+  }
 
-    /**
-     * Get length of the list
-     */
-    public int size() {
-        return length;
+  /**
+   * Refers to C++ algorithm lower_bound(). Compare by {@link IntPair#getFirst(long)} on each
+   * element.
+   *
+   * <p>Note that, you guarantee the sequence in list is in ascendant order.
+   *
+   * @param key Target value
+   * @return Index of target value, or index of the insertion point (that's the index of first
+   *     element bigger than {@code key} or array length)
+   */
+  public int lowerBoundByFirst(int key) {
+    int low = 0;
+    int high = length - 1;
+
+    while (low <= high) {
+      int mid = (low + high) >>> 1;
+      long midVal = IntPair.getFirst(data[mid]);
+
+      if (midVal < key) low = mid + 1;
+      else if (midVal > key) high = mid - 1;
+      else return mid; // key found
     }
+    return low; // key not found.
+  }
 
-    /**
-     * Set element at given index to {@code value}
-     * @throws ArrayIndexOutOfBoundsException if index is invalid
-     */
-    public void set(int index, long value) {
-        if (index >= length || index < 0) {
-            throw new ArrayIndexOutOfBoundsException(index);
-        }
-        data[index] = value;
+  public int lowerBound(long key) {
+    int low = 0;
+    int high = length - 1;
+
+    while (low <= high) {
+      int mid = (low + high) >>> 1;
+      long midVal = data[mid];
+
+      if (midVal < key) low = mid + 1;
+      else if (midVal > key) high = mid - 1;
+      else return mid; // key found
     }
+    return low; // key not found.
+  }
 
-    /**
-     * Refers to C++ algorithm lower_bound().
-     * Compare by {@link IntPair#getFirst(long)} on each element.
-     * <p>
-     * Note that, you guarantee the sequence in list is in ascendant order.
-     *
-     * @param key Target value
-     * @return Index of target value, or index of the insertion point (that's the index of first element
-     * bigger than {@code key} or array length)
-     */
-    public int lowerBoundByFirst(int key) {
-        int low = 0;
-        int high = length - 1;
-
-        while (low <= high) {
-            int mid = (low + high) >>> 1;
-            long midVal = IntPair.getFirst(data[mid]);
-
-            if (midVal < key)
-                low = mid + 1;
-            else if (midVal > key)
-                high = mid - 1;
-            else
-                return mid; // key found
-        }
-        return low;  // key not found.
+  /**
+   * Get element at given index
+   *
+   * @throws ArrayIndexOutOfBoundsException if index is invalid
+   */
+  public long get(int index) {
+    if (index >= length || index < 0) {
+      throw new ArrayIndexOutOfBoundsException(index);
     }
+    return data[index];
+  }
 
-    public int lowerBound(long key) {
-        int low = 0;
-        int high = length - 1;
-
-        while (low <= high) {
-            int mid = (low + high) >>> 1;
-            long midVal = data[mid];
-
-            if (midVal < key)
-                low = mid + 1;
-            else if (midVal > key)
-                high = mid - 1;
-            else
-                return mid; // key found
-        }
-        return low;  // key not found.
-    }
-
-    /**
-     * Get element at given index
-     * @throws ArrayIndexOutOfBoundsException if index is invalid
-     */
-    public long get(int index) {
-        if (index >= length || index < 0) {
-            throw new ArrayIndexOutOfBoundsException(index);
-        }
-        return data[index];
-    }
-
-    public void clear() {
-        length = 0;
-    }
-
+  public void clear() {
+    length = 0;
+  }
 }

@@ -28,26 +28,25 @@ import java.util.regex.Pattern;
 
 public class Transform {
 
-    public Pattern getRegexp() {
-        return regexp;
-    }
+  public Pattern getRegexp() {
+    return regexp;
+  }
 
-    public void setRegexp(Pattern regexp) {
-        this.regexp = regexp;
-    }
+  public void setRegexp(Pattern regexp) {
+    this.regexp = regexp;
+  }
 
-    public List<FormatString> getFormat() {
-        return format;
-    }
+  public List<FormatString> getFormat() {
+    return format;
+  }
 
-    public void setFormat(List<FormatString> format) {
-        this.format = format;
-    }
+  public void setFormat(List<FormatString> format) {
+    this.format = format;
+  }
 
-    public Pattern regexp;
+  public Pattern regexp;
 
-    public boolean globalMode;
+  public boolean globalMode;
 
-    public List<FormatString> format;
-
+  public List<FormatString> format;
 }

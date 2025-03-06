@@ -25,7 +25,6 @@ package io.github.rosemoe.sora.text.method;
 
 import android.text.Editable;
 import android.view.KeyEvent;
-
 import io.github.rosemoe.sora.widget.CodeEditor;
 
 /**
@@ -35,54 +34,52 @@ import io.github.rosemoe.sora.widget.CodeEditor;
  */
 public class KeyMetaStates extends android.text.method.MetaKeyKeyListener {
 
-    private final CodeEditor editor;
+  private final CodeEditor editor;
 
-    /**
-     * Dummy text used for Android original APIs
-     */
-    private final Editable dest = Editable.Factory.getInstance().newEditable("");
-    private boolean isCtrlPressed = false;
+  /** Dummy text used for Android original APIs */
+  private final Editable dest = Editable.Factory.getInstance().newEditable("");
 
-    public KeyMetaStates(CodeEditor editor) {
-        this.editor = editor;
-    }
+  private boolean isCtrlPressed = false;
 
-    public void onKeyDown(KeyEvent event) {
-        super.onKeyDown(editor, dest, event.getKeyCode(), event);
-        isCtrlPressed = event.isCtrlPressed();
-    }
+  public KeyMetaStates(CodeEditor editor) {
+    this.editor = editor;
+  }
 
-    public void onKeyUp(KeyEvent event) {
-        super.onKeyUp(editor, dest, event.getKeyCode(), event);
-        isCtrlPressed = event.isCtrlPressed();
-    }
+  public void onKeyDown(KeyEvent event) {
+    super.onKeyDown(editor, dest, event.getKeyCode(), event);
+    isCtrlPressed = event.isCtrlPressed();
+  }
 
-    public int getMetaState(KeyEvent event) {
-        return getMetaState(dest, event);
-    }
+  public void onKeyUp(KeyEvent event) {
+    super.onKeyUp(editor, dest, event.getKeyCode(), event);
+    isCtrlPressed = event.isCtrlPressed();
+  }
 
-    public boolean isCtrlPressed() {
-        return isCtrlPressed;
-    }
+  public int getMetaState(KeyEvent event) {
+    return getMetaState(dest, event);
+  }
 
-    public boolean isShiftPressed() {
-        return getMetaState(dest, META_SHIFT_ON) != 0;
-    }
+  public boolean isCtrlPressed() {
+    return isCtrlPressed;
+  }
 
-    public boolean isAltPressed() {
-        return getMetaState(dest, META_ALT_ON) != 0;
-    }
+  public boolean isShiftPressed() {
+    return getMetaState(dest, META_SHIFT_ON) != 0;
+  }
 
-    public boolean isSymPressed() {
-        return getMetaState(dest, META_SYM_ON) != 0;
-    }
+  public boolean isAltPressed() {
+    return getMetaState(dest, META_ALT_ON) != 0;
+  }
 
-    public void adjust() {
-        adjustMetaAfterKeypress(dest);
-    }
+  public boolean isSymPressed() {
+    return getMetaState(dest, META_SYM_ON) != 0;
+  }
 
-    public void clearMetaStates(int states) {
-        clearMetaKeyState(editor, dest, states);
-    }
+  public void adjust() {
+    adjustMetaAfterKeypress(dest);
+  }
 
+  public void clearMetaStates(int states) {
+    clearMetaKeyState(editor, dest, states);
+  }
 }

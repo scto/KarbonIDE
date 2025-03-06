@@ -26,35 +26,27 @@ package io.github.rosemoe.sora.graphics;
 import io.github.rosemoe.sora.util.IntPair;
 
 /**
- * Utility for character position description, which is a packed (textOffset,pixelWidthOrOffset) value.
+ * Utility for character position description, which is a packed (textOffset,pixelWidthOrOffset)
+ * value.
  *
  * @author Rosemoe
  */
 public class CharPosDesc {
 
-    private CharPosDesc() {
+  private CharPosDesc() {}
 
-    }
+  /** Make a new character position description */
+  public static long make(int textOffset, float pixelWidthOrOffset) {
+    return IntPair.pack(textOffset, Float.floatToRawIntBits(pixelWidthOrOffset));
+  }
 
-    /**
-     * Make a new character position description
-     */
-    public static long make(int textOffset, float pixelWidthOrOffset) {
-        return IntPair.pack(textOffset, Float.floatToRawIntBits(pixelWidthOrOffset));
-    }
+  /** Get character offset in text */
+  public static int getTextOffset(long packedValue) {
+    return IntPair.getFirst(packedValue);
+  }
 
-    /**
-     * Get character offset in text
-     */
-    public static int getTextOffset(long packedValue) {
-        return IntPair.getFirst(packedValue);
-    }
-
-    /**
-     * Get character width or offset in pixel
-     */
-    public static float getPixelWidthOrOffset(long packedValue) {
-        return Float.intBitsToFloat(IntPair.getSecond(packedValue));
-    }
-
+  /** Get character width or offset in pixel */
+  public static float getPixelWidthOrOffset(long packedValue) {
+    return Float.intBitsToFloat(IntPair.getSecond(packedValue));
+  }
 }

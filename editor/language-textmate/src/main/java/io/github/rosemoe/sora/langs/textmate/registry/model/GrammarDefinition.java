@@ -23,28 +23,24 @@
  */
 package io.github.rosemoe.sora.langs.textmate.registry.model;
 
-
+import java.util.Collections;
+import java.util.Map;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.tm4e.core.registry.IGrammarSource;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 public interface GrammarDefinition {
 
-    String getName();
+  String getName();
 
-    @Nullable
-    String getLanguageConfiguration();
+  @Nullable
+  String getLanguageConfiguration();
 
-    @Nullable
-    String getScopeName();
+  @Nullable
+  String getScopeName();
 
-    default Map<String,String> getEmbeddedLanguages() {
-        return Collections.emptyMap();
-    }
+  default Map<String, String> getEmbeddedLanguages() {
+    return Collections.emptyMap();
+  }
 
-    IGrammarSource getGrammar();
-
+  IGrammarSource getGrammar();
 }

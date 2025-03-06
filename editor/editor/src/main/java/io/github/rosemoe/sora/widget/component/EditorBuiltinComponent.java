@@ -34,14 +34,9 @@ package io.github.rosemoe.sora.widget.component;
  */
 public interface EditorBuiltinComponent {
 
-    /**
-     * Check whether this component is enabled
-     */
-    boolean isEnabled();
+  /** Check whether this component is enabled */
+  boolean isEnabled();
 
-    /**
-     * Enable/disable this builtin component
-     */
-    void setEnabled(boolean enabled);
-
+  /** Enable/disable this builtin component */
+  void setEnabled(boolean enabled);
 }

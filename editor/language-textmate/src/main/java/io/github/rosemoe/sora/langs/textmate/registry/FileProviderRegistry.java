@@ -23,60 +23,55 @@
  */
 package io.github.rosemoe.sora.langs.textmate.registry;
 
-import org.eclipse.jdt.annotation.Nullable;
-
+import io.github.rosemoe.sora.langs.textmate.registry.provider.FileResolver;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.github.rosemoe.sora.langs.textmate.registry.provider.FileResolver;
+import org.eclipse.jdt.annotation.Nullable;
 
 public class FileProviderRegistry {
 
+  private final List<FileResolver> allFileResolvers = new ArrayList<>();
 
-    private final List<FileResolver> allFileResolvers = new ArrayList<>();
+  private static FileProviderRegistry fileProviderRegistry;
 
-    private static FileProviderRegistry fileProviderRegistry;
+  private FileProviderRegistry() {
+    allFileResolvers.add(FileResolver.DEFAULT);
+  }
 
-    private FileProviderRegistry() {
-        allFileResolvers.add(FileResolver.DEFAULT);
+  public static synchronized FileProviderRegistry getInstance() {
+    if (fileProviderRegistry == null) fileProviderRegistry = new FileProviderRegistry();
+    return fileProviderRegistry;
+  }
+
+  public synchronized void addFileProvider(FileResolver fileResolver) {
+    if (fileResolver != FileResolver.DEFAULT) {
+      allFileResolvers.add(fileResolver);
+    }
+  }
+
+  public synchronized void removeFileProvider(FileResolver fileResolver) {
+    if (fileResolver != FileResolver.DEFAULT) {
+      allFileResolvers.remove(fileResolver);
+    }
+  }
+
+  @Nullable
+  public InputStream tryGetInputStream(String path) {
+    for (var provider : allFileResolvers) {
+      var stream = provider.resolveStreamByPath(path);
+      if (stream != null) {
+        return stream;
+      }
+    }
+    return null;
+  }
+
+  public void dispose() {
+    for (var provider : allFileResolvers) {
+      provider.dispose();
     }
 
-    public static synchronized FileProviderRegistry getInstance() {
-        if (fileProviderRegistry == null)
-            fileProviderRegistry = new FileProviderRegistry();
-        return fileProviderRegistry;
-    }
-
-    public synchronized void addFileProvider(FileResolver fileResolver) {
-        if (fileResolver != FileResolver.DEFAULT) {
-            allFileResolvers.add(fileResolver);
-        }
-    }
-
-    public synchronized void removeFileProvider(FileResolver fileResolver) {
-        if (fileResolver != FileResolver.DEFAULT) {
-            allFileResolvers.remove(fileResolver);
-        }
-    }
-
-    @Nullable
-    public InputStream tryGetInputStream(String path) {
-        for (var provider : allFileResolvers) {
-            var stream = provider.resolveStreamByPath(path);
-            if (stream != null) {
-                return stream;
-            }
-        }
-        return null;
-    }
-
-    public void dispose() {
-        for (var provider : allFileResolvers) {
-            provider.dispose();
-        }
-
-        allFileResolvers.clear();
-    }
-
+    allFileResolvers.clear();
+  }
 }

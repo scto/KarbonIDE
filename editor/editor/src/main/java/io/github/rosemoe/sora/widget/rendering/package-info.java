@@ -22,8 +22,5 @@
  *     additional information or have any questions
  */
 
-
-/**
- * This package contains classes related to editor rendering.
- */
+/** This package contains classes related to editor rendering. */
 package io.github.rosemoe.sora.widget.rendering;
