@@ -71,8 +71,8 @@ jobs:
       - name: Commit and Push changes
         run: |
           rm google-java-format.jar
-          git config --global user.name "trindadedev13"
-          git config --global user.email "trindadedev13@gmail.com"
+          git config --global user.name "scto"
+          git config --global user.email "tschmid35@gmail.com"
           git fetch origin ${GITHUB_REF_NAME}:temp
           git add .
           git commit -m "chore: Format Java Code" -m "format code with google java format in github actions"
