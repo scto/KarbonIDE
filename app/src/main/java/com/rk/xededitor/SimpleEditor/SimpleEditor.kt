@@ -20,7 +20,6 @@ import com.rk.settings.PreferencesData
 import com.rk.settings.PreferencesData.getBoolean
 import com.rk.settings.PreferencesKeys
 import com.rk.xededitor.BaseActivity
-import com.rk.xededitor.MainActivity.file.PathUtils
 import com.rk.xededitor.MainActivity.file.PathUtils.toPath
 import com.rk.xededitor.R
 import com.rk.xededitor.SetupEditor
@@ -46,14 +45,14 @@ class SimpleEditor : BaseActivity() {
     var menu: Menu? = null
     var SearchText = ""
     var editor: CodeEditor? = null
-    
+
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (event != null) {
-            editor?.let { KeyEventHandler.onKeyEvent(event, it,this) }
+            editor?.let { KeyEventHandler.onKeyEvent(event, it, this) }
         }
         return super.onKeyDown(keyCode, event)
     }
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_simple_editor)
@@ -154,19 +153,16 @@ class SimpleEditor : BaseActivity() {
                 (Intent.ACTION_VIEW == intent.action || Intent.ACTION_EDIT == intent.action)
         ) {
             uri = intent.data
-            
+
             val path = uri!!.toPath()
             File(path).let {
-                if (it.exists() and Runner.isRunnable(it)){
-                    lifecycleScope.launch(Dispatchers.Default){
-                        while (menu == null){
+                if (it.exists() and Runner.isRunnable(it)) {
+                    lifecycleScope.launch(Dispatchers.Default) {
+                        while (menu == null) {
                             delay(100)
                         }
-                        withContext(Dispatchers.Main){
-                            menu!!.findItem(R.id.run).isVisible = true
-                        }
+                        withContext(Dispatchers.Main) { menu!!.findItem(R.id.run).isVisible = true }
                     }
-                    
                 }
             }
 

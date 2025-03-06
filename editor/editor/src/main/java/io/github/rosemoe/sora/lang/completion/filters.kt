@@ -371,9 +371,8 @@ fun fuzzyScore(
                 ) // only if the forwards chose diagonal is not an uppercase
                 &&
                 backwardsDiagLength + 1 >
-                    diag[row][
-                        diagColumn] // only if our contiguous match would be longer than the
-                                    // "forwards" contiguous match
+                    diag[row][diagColumn] // only if our contiguous match would be longer than the
+        // "forwards" contiguous match
         ) {
             diagColumn = column
         }

@@ -5,23 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
-import com.rk.filetree.interfaces.FileClickListener
-import com.rk.filetree.interfaces.FileLongClickListener
 import com.rk.filetree.interfaces.FileObject
-import com.rk.filetree.model.Node
 import com.rk.filetree.provider.file
 import com.rk.filetree.widget.DiagonalScrollView
 import com.rk.filetree.widget.FileTree
-import com.rk.libcommons.After
-import com.rk.libcommons.DefaultScope
-import com.rk.libcommons.LoadingPopup
 import com.rk.settings.PreferencesData
 import com.rk.settings.PreferencesKeys
 import com.rk.xededitor.MainActivity.MainActivity
 import com.rk.xededitor.MainActivity.MainActivity.Companion.activityRef
-import com.rk.xededitor.MainActivity.handlers.MenuItemHandler
 import com.rk.xededitor.R
-import com.rk.xededitor.rkUtils
 import java.io.File
 import java.lang.ref.WeakReference
 import java.util.LinkedList
@@ -235,7 +227,7 @@ object ProjectManager {
             }
         }
     }
-    
+
     private fun saveProjects(activity: MainActivity) {
         activity.lifecycleScope.launch(Dispatchers.IO) {
             val gson = Gson()

@@ -12,7 +12,7 @@ import kotlin.properties.Delegates
 
 @Suppress("NOTHING_TO_INLINE")
 object FileTreeScrollViewManager {
-    
+
     private inline fun dpToPx(dp: Int, density: Float): Int {
         return (dp * density).toInt()
     }

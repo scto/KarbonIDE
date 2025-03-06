@@ -75,7 +75,8 @@ class Terminal : BaseActivity() {
     }
 
     private fun setupVirtualKeys() {
-        binding.extraKeys.virtualKeysViewClient = terminal?.mTermSession?.let { VirtualKeysListener(it) }
+        binding.extraKeys.virtualKeysViewClient =
+            terminal?.mTermSession?.let { VirtualKeysListener(it) }
         binding.extraKeys.reload(
             VirtualKeysInfo(VIRTUAL_KEYS, "", VirtualKeysConstants.CONTROL_CHARS_ALIASES)
         )
@@ -93,17 +94,16 @@ class Terminal : BaseActivity() {
                 PreferencesData.getString(PreferencesKeys.TERMINAL_TEXT_SIZE, "14").toFloat()
             )
         )
-        
+
         terminal!!.keepScreenOn = true
         val params = LinearLayout.LayoutParams(-1, 0)
         params.weight = 1f
         binding.root.addView(terminal, 0, params)
         terminal!!.requestFocus()
         terminal!!.setFocusableInTouchMode(true)
-        
-        
-        val customFont = File(Environment.getExternalStorageDirectory(),"karbon/terminal_font.ttf")
-        if (customFont.exists() and customFont.isFile){
+
+        val customFont = File(Environment.getExternalStorageDirectory(), "karbon/terminal_font.ttf")
+        if (customFont.exists() and customFont.isFile) {
             terminal!!.setTypeface(Typeface.createFromFile(customFont))
         }
     }

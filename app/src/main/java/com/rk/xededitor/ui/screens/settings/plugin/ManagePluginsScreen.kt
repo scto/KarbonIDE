@@ -5,7 +5,6 @@ import android.app.Application
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
@@ -61,12 +60,12 @@ import com.rk.plugin.server.PluginUtils
 import com.rk.plugin.server.PluginUtils.indexPlugins
 import com.rk.xededitor.R
 import com.rk.xededitor.rkUtils
+import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.robok.engine.core.components.compose.preferences.base.PreferenceGroup
 import org.robok.engine.core.components.compose.preferences.base.PreferenceTemplate
-import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -77,42 +76,44 @@ fun ManagePluginsScreen(
 ) {
     var showAddPluginDialog by remember { mutableStateOf(false) }
     var showDownloadDialog by remember { mutableStateOf(false) }
-    
+
     var selectedPlugin by remember { mutableStateOf<PluginInfo?>(null) }
-    
+
     val coroutineScope = rememberCoroutineScope()
-    
-    val pickFileLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        uri?.let {
-            val fileName = getFileName(uri = it, activity = activity)
-            if (fileName?.endsWith(".zip") == true) {
-                LoadingPopup(activity, null).let { popup ->
-                    popup.show()
-                    coroutineScope.launch(Dispatchers.IO) {
-                        val isInstalled = activity.contentResolver.openInputStream(it)?.let { inputStream ->
-                            PluginInstaller.installFromZip(activity, inputStream)
-                        } ?: false
-                        
-                        withContext(Dispatchers.Main) {
-                            if (isInstalled) {
-                                rkUtils.toast(rkUtils.getString(R.string.install_done))
-                                viewModel.loadInstalledPlugins(
-                                    (activity as Activity).applicationContext as Application
-                                )
-                            } else {
-                                rkUtils.toast(rkUtils.getString(R.string.install_failed))
+
+    val pickFileLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                val fileName = getFileName(uri = it, activity = activity)
+                if (fileName?.endsWith(".zip") == true) {
+                    LoadingPopup(activity, null).let { popup ->
+                        popup.show()
+                        coroutineScope.launch(Dispatchers.IO) {
+                            val isInstalled =
+                                activity.contentResolver.openInputStream(it)?.let { inputStream ->
+                                    PluginInstaller.installFromZip(activity, inputStream)
+                                } ?: false
+
+                            withContext(Dispatchers.Main) {
+                                if (isInstalled) {
+                                    rkUtils.toast(rkUtils.getString(R.string.install_done))
+                                    viewModel.loadInstalledPlugins(
+                                        (activity as Activity).applicationContext as Application
+                                    )
+                                } else {
+                                    rkUtils.toast(rkUtils.getString(R.string.install_failed))
+                                }
+                                popup.hide()
                             }
-                            popup.hide()
                         }
+
+                        popup.hide()
                     }
-                    
-                    popup.hide()
+                } else {
+                    rkUtils.toast(rkUtils.getString(R.string.invalid_file_type))
                 }
-            } else {
-                rkUtils.toast(rkUtils.getString(R.string.invalid_file_type))
             }
         }
-    }
     var selectedTabIndex by remember { mutableIntStateOf(0) }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -143,14 +144,11 @@ fun ManagePluginsScreen(
     ) { innerPadding ->
         val tabs = listOf(stringResource(R.string.installed), stringResource(R.string.available))
         // val layoutDirection = LocalLayoutDirection.current
-        
+
         Column {
             TabRow(
                 selectedTabIndex = selectedTabIndex,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(innerPadding)
-                    .padding(top = 5.dp),
+                modifier = Modifier.fillMaxWidth().padding(innerPadding).padding(top = 5.dp),
             ) {
                 tabs.forEachIndexed { index, title ->
                     Tab(
@@ -160,21 +158,22 @@ fun ManagePluginsScreen(
                     )
                 }
             }
-            
+
             Crossfade(targetState = selectedTabIndex, label = "screens") { screen ->
                 when (screen) {
                     0 -> InstalledPlugins(viewModel = viewModel, activity = activity)
-                    1 -> AvailablePlugins(
-                        viewModel = viewModel,
-                        onPluginSelected = { plugin ->
-                            selectedPlugin = plugin
-                            showDownloadDialog = true
-                        },
-                    )
+                    1 ->
+                        AvailablePlugins(
+                            viewModel = viewModel,
+                            onPluginSelected = { plugin ->
+                                selectedPlugin = plugin
+                                showDownloadDialog = true
+                            },
+                        )
                 }
             }
         }
-        
+
         if (showAddPluginDialog) {
             AddPluginDialog(
                 onDismissRequest = { showAddPluginDialog = false },
@@ -184,9 +183,13 @@ fun ManagePluginsScreen(
                 },
             )
         }
-        
+
         if (showDownloadDialog && (selectedPlugin != null)) {
-            if (PluginUtils.getInstalledPlugins().map { it.info.packageName }.contains(selectedPlugin!!.packageName)) {
+            if (
+                PluginUtils.getInstalledPlugins()
+                    .map { it.info.packageName }
+                    .contains(selectedPlugin!!.packageName)
+            ) {
                 rkUtils.toast(activity.getString(R.string.already_installed))
             } else {
                 DownloadDialog(
@@ -196,51 +199,74 @@ fun ManagePluginsScreen(
                         coroutineScope.launch(Dispatchers.IO) {
                             activity.application.indexPlugins()
                             val plugin = selectedPlugin!!
-                            if (PluginUtils.getInstalledPlugins().map { it.info.packageName }.contains(plugin.packageName)) {
+                            if (
+                                PluginUtils.getInstalledPlugins()
+                                    .map { it.info.packageName }
+                                    .contains(plugin.packageName)
+                            ) {
                                 withContext(Dispatchers.Main) {
                                     rkUtils.toast(activity.getString(R.string.already_installed))
                                 }
                             } else {
-                                
+
                                 LoadingPopup(activity, null).apply {
                                     show()
-                                    
+
                                     fun getWgetDownloadUrl(repoUrl: String): String {
                                         // Extract the repository owner and name from the URL
-                                        val parts = repoUrl.removePrefix("https://github.com/").split("/")
+                                        val parts =
+                                            repoUrl.removePrefix("https://github.com/").split("/")
                                         if (parts.size < 2) {
-                                            throw IllegalArgumentException("Invalid GitHub repository URL")
+                                            throw IllegalArgumentException(
+                                                "Invalid GitHub repository URL"
+                                            )
                                         }
-                                        
+
                                         val owner = parts[0]
                                         val repoName = parts[1]
-                                        
-                                        // Construct the URL to download the main branch as a ZIP file
+
+                                        // Construct the URL to download the main branch as a ZIP
+                                        // file
                                         return "https://github.com/$owner/$repoName/archive/refs/heads/main.zip"
                                     }
-                                    
-                                    
+
                                     val url = getWgetDownloadUrl(plugin.repo)
-                                    rkUtils.downloadFile(url, File(activity.filesDir.parentFile, "tmp").absolutePath, plugin.title + ".zip", {
-                                        //onComplete
-                                        coroutineScope.launch(Dispatchers.Main) {
-                                            withContext(Dispatchers.IO){
-                                                File(File(activity.filesDir.parentFile, "tmp"), plugin.title + ".zip").let {
-                                                    PluginInstaller.installFromZip(activity,it)
-                                                    it.delete()
+                                    rkUtils.downloadFile(
+                                        url,
+                                        File(activity.filesDir.parentFile, "tmp").absolutePath,
+                                        plugin.title + ".zip",
+                                        {
+                                            // onComplete
+                                            coroutineScope.launch(Dispatchers.Main) {
+                                                withContext(Dispatchers.IO) {
+                                                    File(
+                                                            File(
+                                                                activity.filesDir.parentFile,
+                                                                "tmp",
+                                                            ),
+                                                            plugin.title + ".zip",
+                                                        )
+                                                        .let {
+                                                            PluginInstaller.installFromZip(
+                                                                activity,
+                                                                it,
+                                                            )
+                                                            it.delete()
+                                                        }
                                                 }
+                                                hide()
+                                                rkUtils.toast("Successfully downloaded")
                                             }
-                                            hide()
-                                            rkUtils.toast("Successfully downloaded")
-                                        }
-                                    }, {
-                                        //onFailure
-                                        coroutineScope.launch(Dispatchers.Main) {
-                                            hide()
-                                            rkUtils.toast("Downloaded failed")
-                                        }
-                                    })
-//
+                                        },
+                                        {
+                                            // onFailure
+                                            coroutineScope.launch(Dispatchers.Main) {
+                                                hide()
+                                                rkUtils.toast("Downloaded failed")
+                                            }
+                                        },
+                                    )
+                                    //
                                 }
                             }
                         }
@@ -256,11 +282,11 @@ fun ManagePluginsScreen(
 fun InstalledPlugins(viewModel: PluginViewModel, activity: Context) {
     val plugins = viewModel.plugins
     val coroutineScope = rememberCoroutineScope()
-    
+
     LaunchedEffect(Unit) {
         viewModel.loadInstalledPlugins(activity.applicationContext as Application)
     }
-    
+
     Column {
         if (!viewModel.isLoading && plugins.isNotEmpty()) {
             PreferenceGroup(heading = stringResource(id = R.string.installed)) {
@@ -319,11 +345,7 @@ private fun PluginRow(
         description = {
             Text(text = plugin.description, style = MaterialTheme.typography.titleSmall)
         },
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = {
-                onClick()
-            }),
+        modifier = Modifier.fillMaxWidth().clickable(onClick = { onClick() }),
         startWidget = {
             AnimatedVisibility(
                 visible = !plugin.icon.isNullOrEmpty(),
@@ -333,9 +355,7 @@ private fun PluginRow(
                 AsyncImage(
                     model = plugin.icon ?: R.drawable.android,
                     contentDescription = plugin.title,
-                    modifier = Modifier
-                        .size(45.dp)
-                        .padding(4.dp),
+                    modifier = Modifier.size(45.dp).padding(4.dp),
                     contentScale = ContentScale.Crop,
                 )
             }
@@ -343,9 +363,7 @@ private fun PluginRow(
         endWidget = {
             if (installed) {
                 Switch(
-                    modifier = Modifier
-                        .padding(12.dp)
-                        .height(24.dp),
+                    modifier = Modifier.padding(12.dp).height(24.dp),
                     checked = active,
                     onCheckedChange = null,
                 )
@@ -401,11 +419,12 @@ private fun getFileName(uri: Uri, activity: Context): String? {
     cursor?.use {
         if (it.moveToFirst()) {
             val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-            result = if (nameIndex != -1) {
-                it.getString(nameIndex)
-            } else {
-                null
-            }
+            result =
+                if (nameIndex != -1) {
+                    it.getString(nameIndex)
+                } else {
+                    null
+                }
         }
     }
     return result

@@ -18,6 +18,7 @@ interface VirtualActivityImpl {
 }
 
 private val activityMap = HashMap<String, VirtualActivityImpl>()
+
 @Keep
 fun launchActivity(
     context: Context,

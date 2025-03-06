@@ -9,7 +9,7 @@ import com.rk.xededitor.ui.screens.project.view.ProjectView
 import soup.compose.material.motion.animation.rememberSlideDistance
 
 @Composable
-fun ProjectsNavHost(navController: NavHostController){
+fun ProjectsNavHost(navController: NavHostController) {
     val slideDistance = rememberSlideDistance()
     NavHost(
         navController = navController,
@@ -18,11 +18,7 @@ fun ProjectsNavHost(navController: NavHostController){
         exitTransition = { NavigationAnimationTransitions.exitTransition(slideDistance) },
         popEnterTransition = { NavigationAnimationTransitions.popEnterTransition(slideDistance) },
         popExitTransition = { NavigationAnimationTransitions.popExitTransition(slideDistance) },
-    ){
-        composable(ProjectsRoutes.Main.routes){
-            ProjectView()
-        }
-
+    ) {
+        composable(ProjectsRoutes.Main.routes) { ProjectView() }
     }
-    
 }

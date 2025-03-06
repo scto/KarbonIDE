@@ -1,8 +1,8 @@
 package com.rk.xededitor.MainActivity.tabs.editor
 
+import com.rk.libcommons.DefaultScope
 import com.rk.settings.PreferencesData
 import com.rk.settings.PreferencesKeys
-import com.rk.libcommons.DefaultScope
 import com.rk.xededitor.MainActivity.MainActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -14,7 +14,7 @@ object AutoSaver {
 
     var delayTime = 10000L
     private var job: Job? = null
-    
+
     fun start(activity: MainActivity) {
         job?.let {
             if (it.isActive) {
@@ -41,8 +41,13 @@ object AutoSaver {
                             ) {
                                 withContext(Dispatchers.Main) {
                                     it.adapter.tabFragments.values.forEach { f ->
-                                        if(f.get() != null && f.get()?.fragment is EditorFragment){
-                                            (f.get()?.fragment as EditorFragment).save(showToast = false, isAutoSaver = true)
+                                        if (
+                                            f.get() != null && f.get()?.fragment is EditorFragment
+                                        ) {
+                                            (f.get()?.fragment as EditorFragment).save(
+                                                showToast = false,
+                                                isAutoSaver = true,
+                                            )
                                         }
                                     }
                                 }

@@ -29,9 +29,11 @@ fun SettingsAppScreen() {
     val context = LocalContext.current
     var isOled by remember { mutableStateOf(PreferencesData.isOled()) }
     var isMonet by remember { mutableStateOf(PreferencesData.isMonet()) }
-    var checkForUpdates by remember { mutableStateOf(PreferencesData.getBoolean(PreferencesKeys.CHECK_UPDATE, true)) }
+    var checkForUpdates by remember {
+        mutableStateOf(PreferencesData.getBoolean(PreferencesKeys.CHECK_UPDATE, true))
+    }
     val showDayNightBottomSheet = remember { mutableStateOf(false) }
-    
+
     PreferenceLayout(label = stringResource(id = R.string.app), backArrowVisible = true) {
         ThemeModePreference(showDayNightBottomSheet)
         OledPreference(isOled) { isEnabled ->
@@ -61,7 +63,7 @@ fun ThemeModePreference(showBottomSheet: MutableState<Boolean>) {
         label = stringResource(id = R.string.theme_mode),
         description = stringResource(id = R.string.theme_mode_desc),
         iconResource = R.drawable.theme_mode,
-        onNavigate = { showBottomSheet.value = true }
+        onNavigate = { showBottomSheet.value = true },
     )
 }
 
@@ -76,9 +78,9 @@ fun OledPreference(isOled: Boolean, onToggle: (Boolean) -> Unit) {
             Switch(
                 modifier = Modifier.padding(12.dp).height(24.dp),
                 checked = isOled,
-                onCheckedChange = { onToggle(!isOled) }
+                onCheckedChange = { onToggle(!isOled) },
             )
-        }
+        },
     )
 }
 
@@ -93,9 +95,9 @@ fun CheckForUpdatesPreference(checkForUpdates: Boolean, onToggle: (Boolean) -> U
             Switch(
                 modifier = Modifier.padding(12.dp).height(24.dp),
                 checked = checkForUpdates,
-                onCheckedChange = { onToggle(!checkForUpdates) }
+                onCheckedChange = { onToggle(!checkForUpdates) },
             )
-        }
+        },
     )
 }
 
@@ -113,9 +115,9 @@ fun MonetPreference(isMonet: Boolean, onToggle: (Boolean) -> Unit) {
                 modifier = Modifier.padding(12.dp).height(24.dp),
                 checked = isMonet,
                 enabled = isEnabled,
-                onCheckedChange = { if (isEnabled) onToggle(!isMonet) }
+                onCheckedChange = { if (isEnabled) onToggle(!isMonet) },
             )
-        }
+        },
     )
 }
 
@@ -126,34 +128,67 @@ fun DayNightDialog(showBottomSheet: MutableState<Boolean>, context: Context) {
     val coroutineScope = rememberCoroutineScope()
     var selectedMode by remember {
         mutableIntStateOf(
-            PreferencesData.getString(PreferencesKeys.DEFAULT_NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM.toString()).toInt()
+            PreferencesData.getString(
+                    PreferencesKeys.DEFAULT_NIGHT_MODE,
+                    AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM.toString(),
+                )
+                .toInt()
         )
     }
-    
-    val modes = listOf(AppCompatDelegate.MODE_NIGHT_NO, AppCompatDelegate.MODE_NIGHT_YES, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-    val modeLabels = listOf(context.getString(R.string.light_mode), context.getString(R.string.dark_mode), context.getString(R.string.auto_mode))
-    
+
+    val modes =
+        listOf(
+            AppCompatDelegate.MODE_NIGHT_NO,
+            AppCompatDelegate.MODE_NIGHT_YES,
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
+        )
+    val modeLabels =
+        listOf(
+            context.getString(R.string.light_mode),
+            context.getString(R.string.dark_mode),
+            context.getString(R.string.auto_mode),
+        )
+
     if (showBottomSheet.value) {
-        ModalBottomSheet(onDismissRequest = { showBottomSheet.value = false }, sheetState = bottomSheetState) {
+        ModalBottomSheet(
+            onDismissRequest = { showBottomSheet.value = false },
+            sheetState = bottomSheetState,
+        ) {
             BottomSheetContent(
                 title = { Text(text = stringResource(id = R.string.select_theme_mode)) },
                 buttons = {
-                    OutlinedButton(onClick = { coroutineScope.launch { bottomSheetState.hide(); showBottomSheet.value = false } }) {
+                    OutlinedButton(
+                        onClick = {
+                            coroutineScope.launch {
+                                bottomSheetState.hide()
+                                showBottomSheet.value = false
+                            }
+                        }
+                    ) {
                         Text(text = stringResource(id = R.string.cancel))
                     }
-                }
+                },
             ) {
                 LazyColumn {
                     itemsIndexed(modes) { index, mode ->
                         PreferenceTemplate(
                             title = { Text(text = modeLabels[index]) },
-                            modifier = Modifier.clickable {
-                                selectedMode = mode
-                                PreferencesData.setString(PreferencesKeys.DEFAULT_NIGHT_MODE, selectedMode.toString())
-                                AppCompatDelegate.setDefaultNightMode(selectedMode)
-                                coroutineScope.launch { bottomSheetState.hide(); showBottomSheet.value = false }
+                            modifier =
+                                Modifier.clickable {
+                                    selectedMode = mode
+                                    PreferencesData.setString(
+                                        PreferencesKeys.DEFAULT_NIGHT_MODE,
+                                        selectedMode.toString(),
+                                    )
+                                    AppCompatDelegate.setDefaultNightMode(selectedMode)
+                                    coroutineScope.launch {
+                                        bottomSheetState.hide()
+                                        showBottomSheet.value = false
+                                    }
+                                },
+                            startWidget = {
+                                RadioButton(selected = selectedMode == mode, onClick = null)
                             },
-                            startWidget = { RadioButton(selected = selectedMode == mode, onClick = null) }
                         )
                     }
                 }

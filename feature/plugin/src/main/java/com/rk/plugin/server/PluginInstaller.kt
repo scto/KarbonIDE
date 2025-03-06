@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 @Suppress("NOTHING_TO_INLINE")
 object PluginInstaller {
-    
+
     inline fun installFromZip(context: Context, file: File): Boolean {
         return installFromZip(context, FileInputStream(file))
     }

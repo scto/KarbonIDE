@@ -16,6 +16,7 @@ import java.lang.ref.WeakReference
 abstract class BaseActivity : AppCompatActivity() {
     companion object {
         val activityMap = ArrayMap<Class<out BaseActivity>, WeakReference<Activity>>()
+
         // used by plugins
         @Keep
         fun getActivity(clazz: Class<out BaseActivity>): Activity? {
@@ -25,7 +26,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (event != null) {
-            if (this::class.java.name == MainActivity::class.java.name){
+            if (this::class.java.name == MainActivity::class.java.name) {
                 KeyEventHandler.onAppKeyEvent(event)
             }
         }

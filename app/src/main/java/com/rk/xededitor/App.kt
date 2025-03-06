@@ -8,19 +8,18 @@ import com.rk.xededitor.CrashHandler.CrashHandler
 import com.rk.xededitor.MainActivity.handlers.VersionChangeHandler
 import com.rk.xededitor.ui.screens.settings.terminal.updateProotArgs
 import com.rk.xededitor.update.UpdateManager
+import java.io.File
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.io.File
 
 class App : Application() {
-    
+
     companion object {
-        @Deprecated("use libcommons application instead")
-        lateinit var app: Application
-        
+        @Deprecated("use libcommons application instead") lateinit var app: Application
+
         inline fun Context.getTempDir(): File {
             val tmp = File(filesDir.parentFile, "tmp")
             if (!tmp.exists()) {
@@ -29,7 +28,7 @@ class App : Application() {
             return tmp
         }
     }
-    
+
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate() {
         app = this
@@ -37,9 +36,9 @@ class App : Application() {
         super.onCreate()
         // create crash handler
         CrashHandler.INSTANCE.init(this)
-        
+
         GlobalScope.launch(Dispatchers.IO) {
-            //wait for version change handler
+            // wait for version change handler
             VersionChangeHandler.handle(this@App)
             launch(Dispatchers.IO) {
                 delay(1000)
@@ -50,13 +49,10 @@ class App : Application() {
                 val pluginLoader = Loader(this@App)
                 pluginLoader.start()
             }
-            launch(Dispatchers.IO){
-                SetupEditor.init(this@App)
-            }
+            launch(Dispatchers.IO) { SetupEditor.init(this@App) }
             delay(6000)
-            //check for updates
+            // check for updates
             UpdateManager.fetch("dev")
         }
-        
     }
 }

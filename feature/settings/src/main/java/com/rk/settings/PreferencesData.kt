@@ -7,12 +7,12 @@ import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import com.rk.libcommons.application
 
-
 @SuppressLint("ApplySharedPref")
 object PreferencesData {
     init {
         PreferencesData.initPref(application!!)
     }
+
     private const val PREFNAME = "Settings"
 
     fun isDarkMode(ctx: Context): Boolean {
@@ -42,13 +42,11 @@ object PreferencesData {
     fun isMonet(): Boolean {
         return getBoolean(PreferencesKeys.MONET, false)
     }
-    
-    
+
     fun getBoolean(key: String?, default: Boolean): Boolean {
         return sharedPreferences!!.getBoolean(key, default)
     }
-    
-    
+
     fun setBoolean(key: String?, value: Boolean) {
         val editor = sharedPreferences!!.edit()
         editor.putBoolean(key, value)
@@ -61,13 +59,11 @@ object PreferencesData {
     }
 
     private var sharedPreferences: SharedPreferences? = null
-    
-    
+
     fun getString(key: String?, default: String): String {
         return sharedPreferences!!.getString(key, default) ?: default
     }
-    
-    
+
     fun setString(key: String?, value: String?) {
         val editor = sharedPreferences!!.edit()
         editor.putString(key, value)

@@ -5,22 +5,22 @@ import androidx.lifecycle.lifecycleScope
 import com.rk.runner.Runner
 import com.rk.xededitor.MainActivity.MainActivity
 import com.rk.xededitor.MainActivity.TabFragment
-import com.rk.xededitor.MainActivity.tabs.editor.EditorFragment
 import com.rk.xededitor.MainActivity.file.FileManager.Companion.findGitRoot
+import com.rk.xededitor.MainActivity.tabs.editor.EditorFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
 object MenuItemHandler {
     fun update(activity: MainActivity) {
         activity.lifecycleScope.launch(Dispatchers.Default) {
-            val editorFragment = if (activity.adapter.getCurrentFragment()?.fragment is EditorFragment){
-                activity.adapter.getCurrentFragment()?.fragment as EditorFragment
-            }else{
-                null
-            }
+            val editorFragment =
+                if (activity.adapter.getCurrentFragment()?.fragment is EditorFragment) {
+                    activity.adapter.getCurrentFragment()?.fragment as EditorFragment
+                } else {
+                    null
+                }
             // wait until the menu is Initialized
             while (activity.isMenuInitialized().not()) {
                 delay(50)
@@ -54,7 +54,7 @@ object MenuItemHandler {
                             xc != null && gitRoot != null && activity.tabLayout.tabCount > 0
                     }
                 }
-                
+
                 updateUndoRedoAndModifiedStar(menu, activity.adapter.getCurrentFragment(), activity)
 
                 searchMenu(menu, editorFragment?.editor?.isSearching() ?: false)
@@ -62,15 +62,18 @@ object MenuItemHandler {
         }
     }
 
-    
+    private fun updateUndoRedoAndModifiedStar(
+        menu: Menu,
+        currentFragment: TabFragment?,
+        activity: MainActivity,
+    ) {
+        val editorFragment =
+            if (activity.adapter.getCurrentFragment()?.fragment is EditorFragment) {
+                activity.adapter.getCurrentFragment()?.fragment as EditorFragment
+            } else {
+                null
+            }
 
-    private fun updateUndoRedoAndModifiedStar(menu: Menu, currentFragment: TabFragment?, activity: MainActivity) {
-        val editorFragment = if (activity.adapter.getCurrentFragment()?.fragment is EditorFragment){
-            activity.adapter.getCurrentFragment()?.fragment as EditorFragment
-        }else{
-            null
-        }
-        
         menu.findItem(Id.redo).isEnabled = editorFragment?.editor?.canRedo() == true
         menu.findItem(Id.undo).isEnabled = editorFragment?.editor?.canUndo() == true
     }

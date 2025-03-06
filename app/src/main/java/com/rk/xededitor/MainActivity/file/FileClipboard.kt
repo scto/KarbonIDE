@@ -4,8 +4,8 @@ import java.io.File
 
 @Suppress("NOTHING_TO_INLINE")
 object FileClipboard {
-     var fileClipboard: File? = null
-     var isPasted: Boolean = true
+    var fileClipboard: File? = null
+    var isPasted: Boolean = true
 
     inline fun setFile(file: File?) {
         synchronized(this) {

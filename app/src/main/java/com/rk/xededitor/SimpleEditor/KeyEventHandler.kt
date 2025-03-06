@@ -2,20 +2,19 @@ package com.rk.xededitor.SimpleEditor
 
 import android.content.Intent
 import android.view.KeyEvent
-import com.rk.libcommons.Printer
 import com.rk.xededitor.MainActivity.BatchReplacement
 import com.rk.xededitor.R
 import io.github.rosemoe.sora.widget.CodeEditor
 
 object KeyEventHandler {
-    
-    fun onKeyEvent(keyEvent: KeyEvent,editor: CodeEditor,activity:SimpleEditor) {
+
+    fun onKeyEvent(keyEvent: KeyEvent, editor: CodeEditor, activity: SimpleEditor) {
         if (keyEvent.isCtrlPressed) {
             when (keyEvent.keyCode) {
                 KeyEvent.KEYCODE_S -> {
-                    HandleMenuItemClick.handle(activity,R.id.action_save)
+                    HandleMenuItemClick.handle(activity, R.id.action_save)
                 }
-                
+
                 KeyEvent.KEYCODE_PLUS,
                 70 -> {
                     editor.let {
@@ -24,7 +23,7 @@ object KeyEventHandler {
                         }
                     }
                 }
-                
+
                 KeyEvent.KEYCODE_MINUS -> {
                     editor.let {
                         if (it.textSizePx > 8) {
@@ -32,25 +31,23 @@ object KeyEventHandler {
                         }
                     }
                 }
-                
+
                 KeyEvent.KEYCODE_F -> {
-                    HandleMenuItemClick.handle(activity,R.id.search)
+                    HandleMenuItemClick.handle(activity, R.id.search)
                 }
-                
+
                 KeyEvent.KEYCODE_H -> {
                     activity.startActivity(Intent(activity, BatchReplacement::class.java))
                 }
-                
+
                 KeyEvent.KEYCODE_P -> {
-                    HandleMenuItemClick.handle(activity,R.id.action_print)
+                    HandleMenuItemClick.handle(activity, R.id.action_print)
                 }
-                
+
                 KeyEvent.KEYCODE_G -> {
                     val line = 0
                     var column =
-                        (editor.text.getLine(line).length).coerceAtMost(
-                            editor.cursor.leftColumn
-                        )
+                        (editor.text.getLine(line).length).coerceAtMost(editor.cursor.leftColumn)
                     if (column < 0) {
                         column = 0
                     }
@@ -68,7 +65,6 @@ object KeyEventHandler {
                     editor.cursor.set(line, column)
                 }
             }
-            
         }
     }
 }

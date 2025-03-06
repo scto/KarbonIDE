@@ -16,9 +16,9 @@ import androidx.compose.ui.unit.dp
 import com.rk.settings.PreferencesData
 import com.rk.settings.PreferencesKeys
 import com.rk.xededitor.MainActivity.MainActivity
+import com.rk.xededitor.MainActivity.file.smoothTabs
 import com.rk.xededitor.MainActivity.tabs.editor.AutoSaver
 import com.rk.xededitor.MainActivity.tabs.editor.EditorFragment
-import com.rk.xededitor.MainActivity.file.smoothTabs
 import com.rk.xededitor.R
 import com.rk.xededitor.rkUtils
 import com.rk.xededitor.rkUtils.getString
@@ -95,10 +95,9 @@ fun SettingsEditorScreen() {
                 wordwrap = !wordwrap
                 PreferencesData.setBoolean(PreferencesKeys.WORD_WRAP_ENABLED, wordwrap)
                 MainActivity.activityRef.get()?.adapter?.tabFragments?.forEach { f ->
-                    if (f.value.get()?.fragment is EditorFragment){
+                    if (f.value.get()?.fragment is EditorFragment) {
                         (f.value.get()?.fragment as EditorFragment).editor?.isWordwrap = wordwrap
                     }
-                    
                 }
             },
             endWidget = {
@@ -156,10 +155,11 @@ fun SettingsEditorScreen() {
                     cursorAnimation,
                 )
                 MainActivity.activityRef.get()?.adapter?.tabFragments?.forEach { f ->
-                    if (f.value.get()?.fragment is EditorFragment){
-                        (f.value.get()?.fragment as EditorFragment).editor?.isCursorAnimationEnabled = cursorAnimation
+                    if (f.value.get()?.fragment is EditorFragment) {
+                        (f.value.get()?.fragment as EditorFragment)
+                            .editor
+                            ?.isCursorAnimationEnabled = cursorAnimation
                     }
-                    
                 }
             },
             endWidget = {
@@ -178,12 +178,12 @@ fun SettingsEditorScreen() {
             onNavigate = {
                 showLineNumber = !showLineNumber
                 PreferencesData.setBoolean(PreferencesKeys.CURSOR_ANIMATION_ENABLED, showLineNumber)
-                
+
                 MainActivity.activityRef.get()?.adapter?.tabFragments?.forEach { f ->
-                    if (f.value.get()?.fragment is EditorFragment){
-                        (f.value.get()?.fragment as EditorFragment).editor?.isLineNumberEnabled = showLineNumber
+                    if (f.value.get()?.fragment is EditorFragment) {
+                        (f.value.get()?.fragment as EditorFragment).editor?.isLineNumberEnabled =
+                            showLineNumber
                     }
-                    
                 }
             },
             endWidget = {
@@ -203,10 +203,11 @@ fun SettingsEditorScreen() {
                 pinLineNumber = !pinLineNumber
                 PreferencesData.setBoolean(PreferencesKeys.PIN_LINE_NUMBER, pinLineNumber)
                 MainActivity.activityRef.get()?.adapter?.tabFragments?.forEach { f ->
-                    if (f.value.get()?.fragment is EditorFragment){
-                        (f.value.get()?.fragment as EditorFragment).editor?.setPinLineNumber(pinLineNumber)
+                    if (f.value.get()?.fragment is EditorFragment) {
+                        (f.value.get()?.fragment as EditorFragment)
+                            .editor
+                            ?.setPinLineNumber(pinLineNumber)
                     }
-                    
                 }
             },
             endWidget = {
@@ -246,9 +247,8 @@ fun SettingsEditorScreen() {
                     if (activity.tabViewModel.fragmentFiles.isEmpty()) {
                         return@let
                     }
-                    
-                    
-                    //todo arrow keys
+
+                    // todo arrow keys
 
                     val viewpager = activity.binding.viewpager2
                     val layoutParams = viewpager.layoutParams as RelativeLayout.LayoutParams
@@ -362,10 +362,11 @@ fun SettingsEditorScreen() {
                     } else {
                         PreferencesData.setString(PreferencesKeys.TEXT_SIZE, textSizeValue)
                         MainActivity.activityRef.get()?.adapter?.tabFragments?.forEach { f ->
-                            if (f.value.get()?.fragment is EditorFragment){
-                                (f.value.get()?.fragment as EditorFragment).editor?.setTextSize(textSizeValue.toFloat())
+                            if (f.value.get()?.fragment is EditorFragment) {
+                                (f.value.get()?.fragment as EditorFragment)
+                                    .editor
+                                    ?.setTextSize(textSizeValue.toFloat())
                             }
-                            
                         }
                     }
                     showTextSizeDialog = false
@@ -386,12 +387,12 @@ fun SettingsEditorScreen() {
                         rkUtils.toast(context.getString(R.string.v_large))
                     }
                     PreferencesData.setString(PreferencesKeys.TAB_SIZE, tabSizeValue)
-                    
+
                     MainActivity.activityRef.get()?.adapter?.tabFragments?.forEach { f ->
-                        if (f.value.get()?.fragment is EditorFragment){
-                            (f.value.get()?.fragment as EditorFragment).editor?.tabWidth = tabSizeValue.toInt()
+                        if (f.value.get()?.fragment is EditorFragment) {
+                            (f.value.get()?.fragment as EditorFragment).editor?.tabWidth =
+                                tabSizeValue.toInt()
                         }
-                        
                     }
                     showTabSizeDialog = false
                 },

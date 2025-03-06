@@ -11,16 +11,15 @@ import com.rk.xededitor.MainActivity.tabs.editor.EditorFragment
 import com.rk.xededitor.MainActivity.tabs.media.MediaFragment
 import java.io.File
 
-
 class TabFragment : Fragment() {
     var fragment: CoreFragment? = null
     var type: FragmentType? = null
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
         type = arguments?.getSerializable("type") as FragmentType
-        
+
         when (type) {
             FragmentType.EDITOR -> {
                 arguments?.let {
@@ -33,8 +32,10 @@ class TabFragment : Fragment() {
                     }
                 }
             }
-            
-            FragmentType.AUDIO, FragmentType.VIDEO, FragmentType.IMAGE -> {
+
+            FragmentType.AUDIO,
+            FragmentType.VIDEO,
+            FragmentType.IMAGE -> {
                 arguments?.let {
                     it.getString(ARG_FILE_PATH)?.let { filePath ->
                         val file = File(filePath)
@@ -45,16 +46,15 @@ class TabFragment : Fragment() {
                     }
                 }
             }
-            
+
             FragmentType.TERMINAL -> {}
             FragmentType.WEB -> {}
             null -> {
                 throw RuntimeException("the type is null")
             }
         }
-        
     }
-    
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,35 +62,35 @@ class TabFragment : Fragment() {
     ): View? {
         return fragment?.getView()
     }
-    
+
     override fun onDestroy() {
         super.onDestroy()
         fragment?.onDestroy()
     }
-    
+
     companion object {
         private const val ARG_FILE_PATH = "file_path"
-        
+
         fun newInstance(file: File, type: FragmentType): TabFragment {
             val fragment = TabFragment()
             val args = Bundle()
             args.putSerializable("type", type)
-            
-            
-            
+
             when (type) {
                 FragmentType.EDITOR -> {
                     args.putString(ARG_FILE_PATH, file.absolutePath)
                 }
-                
-                FragmentType.IMAGE, FragmentType.AUDIO, FragmentType.VIDEO -> {
+
+                FragmentType.IMAGE,
+                FragmentType.AUDIO,
+                FragmentType.VIDEO -> {
                     args.putString(ARG_FILE_PATH, file.absolutePath)
                 }
-                
+
                 FragmentType.TERMINAL -> {}
                 FragmentType.WEB -> {}
             }
-            
+
             fragment.arguments = args
             return fragment
         }

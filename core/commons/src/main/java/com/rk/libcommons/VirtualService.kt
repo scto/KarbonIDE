@@ -12,15 +12,15 @@ import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
 class VirtualService : Service() {
-    
+
     private val handlerThread = HandlerThread("BaseLspServiceThread").apply { start() }
     private val handler = Handler(handlerThread.looper)
-    
+
     override fun onBind(intent: Intent?): IBinder? {
         // Return null since this is a background service, not a bound service
         return null
     }
-    
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val runnableId = intent?.getStringExtra(EXTRA_RUNNABLE_ID)
         runnableId?.let {
@@ -35,18 +35,18 @@ class VirtualService : Service() {
         }
         return START_NOT_STICKY
     }
-    
+
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "Service is being destroyed")
         handlerThread.quitSafely()
     }
-    
+
     companion object {
         private const val TAG = "BaseService"
         private const val EXTRA_RUNNABLE_ID = "extra_runnable_id"
         private val runnableMap = ConcurrentHashMap<String, Runnable>()
-        
+
         /**
          * Launches the service with a new runnable task.
          *
@@ -57,10 +57,11 @@ class VirtualService : Service() {
         fun launchService(context: Context, runnable: Runnable) {
             val runnableId = UUID.randomUUID().toString() // Generate a unique ID for each task
             runnableMap[runnableId] = runnable
-            
-            val intent = Intent(context, VirtualService::class.java).apply {
-                putExtra(EXTRA_RUNNABLE_ID, runnableId)
-            }
+
+            val intent =
+                Intent(context, VirtualService::class.java).apply {
+                    putExtra(EXTRA_RUNNABLE_ID, runnableId)
+                }
             context.startService(intent)
             Log.d(TAG, "Service started with runnable ID: $runnableId")
         }

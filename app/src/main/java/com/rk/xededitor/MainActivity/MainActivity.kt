@@ -18,25 +18,25 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rk.libcommons.DefaultScope
 import com.rk.xededitor.BaseActivity
-import com.rk.xededitor.MainActivity.tabs.editor.AutoSaver
 import com.rk.xededitor.MainActivity.file.FileManager
 import com.rk.xededitor.MainActivity.file.ProjectManager
 import com.rk.xededitor.MainActivity.file.TabSelectedListener
 import com.rk.xededitor.MainActivity.handlers.MenuClickHandler
 import com.rk.xededitor.MainActivity.handlers.PermissionHandler
+import com.rk.xededitor.MainActivity.tabs.editor.AutoSaver
 import com.rk.xededitor.R
 import com.rk.xededitor.SetupEditor
 import com.rk.xededitor.databinding.ActivityTabBinding
-import kotlinx.coroutines.launch
 import java.io.File
 import java.lang.ref.WeakReference
+import kotlinx.coroutines.launch
 
 class MainActivity : BaseActivity() {
-    
+
     companion object {
         var activityRef = WeakReference<MainActivity?>(null)
     }
-    
+
     lateinit var binding: ActivityTabBinding
     lateinit var viewPager: ViewPager2
     lateinit var tabLayout: TabLayout
@@ -45,59 +45,57 @@ class MainActivity : BaseActivity() {
     lateinit var menu: Menu
     lateinit var adapter: TabAdapter
     val tabViewModel: TabViewModel by viewModels()
-    
+
     class TabViewModel : ViewModel() {
         val fragmentFiles = mutableListOf<File>()
         val fragmentTitles = mutableListOf<String>()
         val fileSet = HashSet<String>()
     }
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityRef = WeakReference(this)
         binding = ActivityTabBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
+
         setSupportActionBar(binding.toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
-        
+
         SetupEditor.init(this)
         setupDrawer()
-        
+
         setupViewPager()
         setupTabLayout()
         setupAdapter()
-        
+
         ProjectManager.restoreProjects(this)
         ProjectBar.setupNavigationRail(this)
-        
+
         if (tabViewModel.fragmentFiles.isNotEmpty()) {
             binding.tabs.visibility = View.VISIBLE
             binding.mainView.visibility = View.VISIBLE
             binding.openBtn.visibility = View.GONE
         }
-        
-        
-        
     }
-    
+
     fun isAdapterInitialized(): Boolean = this::adapter.isInitialized
+
     fun isMenuInitialized(): Boolean = this::menu.isInitialized
-    
+
     @SuppressLint("RestrictedApi")
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         this.menu = menu
-        
+
         if (menu is MenuBuilder) {
             menu.setOptionalIconsVisible(true)
         }
-        
+
         menu.findItem(R.id.action_add).isVisible = true
         return true
     }
-    
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -106,13 +104,14 @@ class MainActivity : BaseActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         PermissionHandler.onRequestPermissionsResult(requestCode, grantResults, this)
     }
-    
+
     var isPaused = true
+
     override fun onPause() {
         isPaused = true
         super.onPause()
     }
-    
+
     override fun onResume() {
         isPaused = false
         super.onResume()
@@ -120,10 +119,10 @@ class MainActivity : BaseActivity() {
         lifecycleScope.launch { PermissionHandler.verifyStoragePermission(this@MainActivity) }
         ProjectManager.processQueue(this)
     }
-    
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-        
+
         if (id == android.R.id.home) {
             with(binding.drawerLayout) {
                 val start = GravityCompat.START
@@ -142,15 +141,16 @@ class MainActivity : BaseActivity() {
             return false
         }
     }
-    
+
     private fun setupViewPager() {
-        viewPager = binding.viewpager2.apply {
-            // do not remove .toInt
-            offscreenPageLimit = tabLimit.toInt()
-            isUserInputEnabled = false
-        }
+        viewPager =
+            binding.viewpager2.apply {
+                // do not remove .toInt
+                offscreenPageLimit = tabLimit.toInt()
+                isUserInputEnabled = false
+            }
     }
-    
+
     private fun setupDrawer() {
         val drawerLayout = binding.drawerLayout
         drawerToggle =
@@ -164,42 +164,45 @@ class MainActivity : BaseActivity() {
             object : DrawerLayout.DrawerListener {
                 var leftDrawerOffset = 0f
                 var rightDrawerOffset = 0f
-                
+
                 override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
                     val drawerWidth = drawerView.width
                     leftDrawerOffset = drawerWidth * slideOffset
                     binding.main.translationX = leftDrawerOffset
                 }
-                
+
                 override fun onDrawerOpened(drawerView: View) {}
-                
+
                 override fun onDrawerClosed(drawerView: View) {
                     binding.main.translationX = 0f
                     leftDrawerOffset = 0f
                     rightDrawerOffset = 0f
                 }
-                
+
                 override fun onDrawerStateChanged(newState: Int) {}
             }
         )
     }
-    
+
     private fun setupTabLayout() {
         binding.tabs.addOnTabSelectedListener(TabSelectedListener(this@MainActivity))
         tabLayout = binding.tabs
     }
-    
+
     private fun setupAdapter() {
         adapter = TabAdapter(this)
         viewPager.adapter = adapter
-        
+
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = tabViewModel.fragmentTitles[position]
-        }.attach()
+                tab.text = tabViewModel.fragmentTitles[position]
+            }
+            .attach()
     }
-    
-    fun openDrawer(v: View?) { binding.drawerLayout.open() }
-    
+
+    fun openDrawer(v: View?) {
+        binding.drawerLayout.open()
+    }
+
     override fun onDestroy() {
         DefaultScope.cancel()
         super.onDestroy()

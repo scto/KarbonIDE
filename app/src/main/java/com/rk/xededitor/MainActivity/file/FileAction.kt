@@ -19,8 +19,8 @@ import com.jaredrummler.ktsh.Shell
 import com.rk.libcommons.ActionPopup
 import com.rk.libcommons.LoadingPopup
 import com.rk.xededitor.MainActivity.MainActivity
-import com.rk.xededitor.MainActivity.tabs.editor.EditorFragment
 import com.rk.xededitor.MainActivity.tabs.core.FragmentType
+import com.rk.xededitor.MainActivity.tabs.editor.EditorFragment
 import com.rk.xededitor.R
 import com.rk.xededitor.rkUtils
 import com.rk.xededitor.rkUtils.getString
@@ -316,7 +316,7 @@ class FileAction(
                     loading.hide()
                     return@setPositiveButton
                 }
-                
+
                 fun rename(file: File, to: String) {
                     mainActivity.lifecycleScope.launch(Dispatchers.IO) {
                         val random = Random(28958510971)
@@ -340,20 +340,20 @@ class FileAction(
                                 ?.tabFragments
                                 ?.values
                                 ?.forEach { f ->
-                                    if (f.get()?.type == FragmentType.EDITOR){
+                                    if (f.get()?.type == FragmentType.EDITOR) {
                                         val editorFragment = f.get()!!.fragment as EditorFragment
-                                        if (editorFragment.file?.absolutePath == file.absolutePath) {
+                                        if (
+                                            editorFragment.file?.absolutePath == file.absolutePath
+                                        ) {
                                             editorFragment.file = File(to)
                                             // TODO: Update tab text too
                                         }
                                     }
-                                    
                                 }
                         }
                     }
                 }
-                
-                
+
                 rename(file, newFileName)
 
                 loading.hide()

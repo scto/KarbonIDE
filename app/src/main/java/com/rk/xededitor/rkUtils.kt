@@ -20,11 +20,11 @@ import java.net.URL
 @Suppress("NOTHING_TO_INLINE")
 object rkUtils {
     var mHandler = Handler(Looper.getMainLooper())
-    
+
     inline fun runOnUiThread(runnable: Runnable) {
         mHandler.post(runnable)
     }
-    
+
     fun shareText(ctx: Context, text: String?) {
         try {
             val sendIntent = Intent()
@@ -39,7 +39,6 @@ object rkUtils {
         }
     }
 
-    
     inline fun toast(message: String?) {
         runOnUiThread { Toast.makeText(App.app, message, Toast.LENGTH_SHORT).show() }
     }
@@ -58,7 +57,6 @@ object rkUtils {
         return isLargeScreen(context) and isLandscape(context)
     }
 
-    
     inline fun debug(string: String, tag: String = "rkUtils") {
         Log.d(tag, string)
     }
@@ -84,7 +82,6 @@ object rkUtils {
         return false
     }
 
-    
     inline fun getString(stringId: Int): String {
         return ContextCompat.getString(App.app, stringId)
     }

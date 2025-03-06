@@ -1,4 +1,4 @@
 package com.rk.libcommons
 
-//same as MainActivity.lifeCycleScope
+// same as MainActivity.lifeCycleScope
 val DefaultScope = CustomScope()

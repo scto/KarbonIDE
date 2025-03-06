@@ -23,7 +23,7 @@ class JavaRunner(private val type: String) : RunnerImpl {
     }
 
     override fun getName(): String {
-        return type;
+        return type
     }
 
     override fun getDescription(): String {

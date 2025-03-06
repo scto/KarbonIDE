@@ -7,6 +7,7 @@ import androidx.annotation.Keep
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.rk.libcommons.DefaultScope
 import com.rk.runner.runners.jvm.beanshell.BeanshellRunner
 import com.rk.runner.runners.jvm.jdk.JavaRunner
 import com.rk.runner.runners.node.NodeRunner
@@ -15,7 +16,6 @@ import com.rk.runner.runners.shell.ShellRunner
 import com.rk.runner.runners.web.html.HtmlRunner
 import com.rk.runner.runners.web.markdown.MarkDownRunner
 import java.io.File
-import com.rk.libcommons.DefaultScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,27 +23,26 @@ import kotlinx.coroutines.withContext
 
 @Keep
 interface RunnerImpl {
-    @Keep
-    fun run(file: File, context: Context)
-    @Keep
-    fun getName(): String
-    @Keep
-    fun getDescription(): String
-    @Keep
-    fun getIcon(context: Context): Drawable?
+    @Keep fun run(file: File, context: Context)
+
+    @Keep fun getName(): String
+
+    @Keep fun getDescription(): String
+
+    @Keep fun getIcon(context: Context): Drawable?
 }
 
 @Keep
 object Runner {
-    @Keep
-    val registry = HashMap<String, MutableList<RunnerImpl>>()
+    @Keep val registry = HashMap<String, MutableList<RunnerImpl>>()
 
     init {
         registry["bsh"] = mutableListOf(BeanshellRunner())
         registry["html"] = mutableListOf(HtmlRunner())
         registry["md"] = mutableListOf(MarkDownRunner())
         registry["py"] = mutableListOf(PythonRunner())
-        registry["java"] = mutableListOf<RunnerImpl>(JavaRunner("Java"), JavaRunner("Javac"), JavaRunner("Maven"))
+        registry["java"] =
+            mutableListOf<RunnerImpl>(JavaRunner("Java"), JavaRunner("Javac"), JavaRunner("Maven"))
 
         mutableListOf<RunnerImpl>(NodeRunner()).let {
             registry["mjs"] = it

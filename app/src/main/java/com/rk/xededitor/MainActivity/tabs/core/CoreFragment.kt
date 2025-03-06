@@ -5,8 +5,12 @@ import java.io.File
 
 interface CoreFragment {
     fun getView(): View?
+
     fun onDestroy()
+
     fun onCreate()
+
     fun loadFile(file: File)
+
     fun getFile(): File?
 }

@@ -67,8 +67,7 @@ object Chars {
                 return TextRange(pos, pos)
             }
         }
-        
-        
+
         if (
             text.getColumnCount(position.line) == position.column &&
                 position.line < text.lineCount - 1 &&

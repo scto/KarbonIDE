@@ -3,11 +3,11 @@ package com.rk.xededitor.terminal
 import android.content.Context
 import android.os.Build
 import com.jaredrummler.ktsh.Shell
+import com.rk.libcommons.DefaultScope
 import com.rk.libcommons.LoadingPopup
 import com.rk.runner.commonUtils
 import com.rk.settings.PreferencesData
 import com.rk.settings.PreferencesKeys
-import com.rk.libcommons.DefaultScope
 import com.rk.xededitor.R
 import com.rk.xededitor.rkUtils
 import java.io.File
@@ -72,8 +72,7 @@ class SetupBootstrap(val terminal: Terminal, val runnable: Runnable) {
     private fun downloadRootfs() {
         val archName = getaarchName()
 
-        val url =
-            "https://raw.githubusercontent.com/Xed-Editor/Karbon-Packages/main/$archName.tar"
+        val url = "https://raw.githubusercontent.com/Xed-Editor/Karbon-Packages/main/$archName.tar"
 
         DefaultScope.launch(Dispatchers.IO) {
             if (terminal.cacheDir.exists().not()) {

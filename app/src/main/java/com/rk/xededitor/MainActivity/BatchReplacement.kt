@@ -10,8 +10,8 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import com.rk.libcommons.LoadingPopup
 import com.rk.xededitor.BaseActivity
-import com.rk.xededitor.MainActivity.tabs.editor.EditorFragment
 import com.rk.xededitor.MainActivity.tabs.core.FragmentType
+import com.rk.xededitor.MainActivity.tabs.editor.EditorFragment
 import com.rk.xededitor.R
 import com.rk.xededitor.SimpleEditor.SimpleEditor
 import com.rk.xededitor.databinding.ActivityBatchReplacementBinding
@@ -142,9 +142,17 @@ class BatchReplacement : BaseActivity() {
 
                     if (MainActivity.activityRef.get() != null) {
                         MainActivity.activityRef.get()?.adapter?.getCurrentFragment()?.let {
-                            if (it.type!! == FragmentType.EDITOR){
-                                (it.fragment as EditorFragment).editor?.setText((it.fragment as EditorFragment).editor?.text.toString().replace(keyword, replacement))
-                            }else{
+                            if (it.type!! == FragmentType.EDITOR) {
+                                (it.fragment as EditorFragment)
+                                    .editor
+                                    ?.setText(
+                                        (it.fragment as EditorFragment)
+                                            .editor
+                                            ?.text
+                                            .toString()
+                                            .replace(keyword, replacement)
+                                    )
+                            } else {
                                 throw RuntimeException("Unsupported Fragment type")
                             }
                         }

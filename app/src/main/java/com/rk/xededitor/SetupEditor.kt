@@ -2,6 +2,7 @@ package com.rk.xededitor
 
 import android.content.Context
 import android.graphics.Color
+import com.google.gson.JsonParser
 import com.rk.settings.PreferencesData
 import com.rk.settings.PreferencesData.isDarkMode
 import com.rk.xededitor.rkUtils.runOnUiThread
@@ -15,9 +16,8 @@ import io.github.rosemoe.sora.langs.textmate.registry.model.ThemeModel
 import io.github.rosemoe.sora.langs.textmate.registry.provider.AssetsFileResolver
 import io.github.rosemoe.sora.widget.CodeEditor
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme
-import org.eclipse.tm4e.core.registry.IThemeSource
-import com.google.gson.JsonParser
 import java.io.InputStreamReader
+import org.eclipse.tm4e.core.registry.IThemeSource
 
 class SetupEditor(val editor: CodeEditor, private val ctx: Context) {
 
