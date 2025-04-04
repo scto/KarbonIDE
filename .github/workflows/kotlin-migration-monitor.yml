@@ -1,5 +1,15 @@
  name:  kotlin-migration-monitor
- 
+
+ on:
+  push:
+    branches:
+      - main
+      - dev
+    paths-ignore:
+      - '**/*.md'
+  workflow_dispatch:
+
+jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
