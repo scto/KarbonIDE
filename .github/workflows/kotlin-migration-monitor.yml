@@ -1,6 +1,6 @@
- name:  kotlin-migration-monitor
+name: kotlin-migration-monitor
 
- on:
+on:
   push:
     branches:
       - main
@@ -10,7 +10,10 @@
   workflow_dispatch:
 
 jobs:
+  migrate:
+    name: Migrate
     runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -26,5 +29,5 @@ jobs:
       - name: Calculate Migration Progress
         uses: JuriKiin/kotlin-migration-monitor@2024.4.25
         with:
-          directory: '/KarbonIDE/
+          directory: 'app'
           github-token: ${{ secrets.GITHUB_TOKEN }}
