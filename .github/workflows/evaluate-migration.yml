@@ -20,5 +20,5 @@ jobs:
       - name: Calculate Migration Progress
         uses: ./
         with:
-          directory: './sample'
+          directory: './app'
           github-token: ${{ secrets.GITHUB_TOKEN }}
