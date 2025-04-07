@@ -24,25 +24,25 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
+      #- name: Set up Node.js
+      #  uses: actions/setup-node@v4
+      #  with:
           # Action runs: using: node20 as defined in
           # https://github.com/cypress-io/github-action/blob/master/action.yml
           # Node.js minor version is aligned to
           # https://github.com/actions/runner/blob/main/src/Misc/externals.sh
-          node-version: 20.19.0
+       #   node-version: 20.19.0
         #with:
           #node-version: '20'
         
-      - name: Install Node.js
-        run: npm install
+      #- name: Install Node.js
+      #  run: npm install
 
-      - name: Install Actions/Core
-        run: npm i @actions/core
+      #- name: Install Actions/Core
+      #  run: npm i @actions/core
 
-      - name: Install Actions/Github
-        run: npm i @actions/github
+      #- name: Install Actions/Github
+      #  run: npm i @actions/github
         
       - name: Calculate Migration Progress
         uses: JuriKiin/kotlin-migration-monitor@2024.4.25
