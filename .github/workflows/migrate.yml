@@ -1,7 +1,21 @@
-  kotlin-migration-monitor:
+name: Migration CI
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths-ignore:
+      - '**/*.md'
+  workflow_dispatch:
+
+jobs:
+  migrate:
+    name: Migrate
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
+      - name: Check out repository
         uses: actions/checkout@v4
 
       - name: Set up Node.js
@@ -18,3 +32,4 @@
           #directory: './path/to/files'
           directory: './app/src/main/java/com/rk/xededitor'
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          
