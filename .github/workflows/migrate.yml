@@ -1,0 +1,20 @@
+  kotlin-migration-monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+        
+      - name: Install Node.js
+        run: npm install
+
+      - name: Calculate Migration Progress
+        uses: JuriKiin/kotlin-migration-monitor@2024.4.25
+        with:
+          #directory: './path/to/files'
+          directory: './app/src/main/java/com/rk/xededitor'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
