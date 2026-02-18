@@ -1,12 +1,6 @@
 name: kotlin-migration-monitor
 
 on:
-  push:
-    branches:
-      - main
-      - dev
-    paths-ignore:
-      - '**/*.md'
   workflow_dispatch:
 
 jobs:
