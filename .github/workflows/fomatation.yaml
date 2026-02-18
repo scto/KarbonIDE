@@ -1,15 +1,15 @@
 name: Code Formatter
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
       - d
     paths-ignore:
       - '**/*.md'
-  schedule:
-    - cron: '*/30 * * * *' # every 30 minutes
-  workflow_dispatch:
+#  schedule:
+#    - cron: '*/30 * * * *' # every 30 minutes
 
 jobs:
   format:
