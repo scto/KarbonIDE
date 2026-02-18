@@ -23,5 +23,5 @@ jobs:
       - name: Calculate Migration Progress
         uses: JuriKiin/kotlin-migration-monitor@2024.4.25
         with:
-          directory: 'app'
+          directory: './app/src/main/java/com/rk/xededitor'
           github-token: ${{ secrets.GITHUB_TOKEN }}
